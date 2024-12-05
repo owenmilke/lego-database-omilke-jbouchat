@@ -2,16 +2,33 @@
 <html lan="en">
     <head>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="{{ url for('static', filename='login.css') }}">
-        <title>Xbay</title>
+        <title>xBay</title>
     </head>
 
     <header>
-        <h1>XBay - The Everything Store</h1>
+        <h1>xBay - The Everything Store</h1>
     </header>
 
     <body>
         <p>Login stuff goes here</p>
+
+        <form id="login_form" method=post action=confirm_credentials>
+            <h2>Login</h2>
+            <label for="l_username">Username</label>
+            <input type="text" id="l_username" name="l_username"><br>
+            <label for="l_password">Password</label>
+            <input type="password" id="l_password" name="l_password"><br>
+            <button for="login_form" type="submit">Enter</button>
+        </form>
+
+        <form id="create_account_form" method=post action=create_user>
+            <h2>Create Account</h2>
+            <label for="c_username">Username</label>
+            <input type="text" id="c_username" name="c_username"><br>
+            <label for="c_password">Password</label>
+            <input type="password" id="c_password" name="c_password"><br>
+            <button for="create_account_form" type="submit">Enter</button>
+        </form>
     </body>
 
     <footer>
