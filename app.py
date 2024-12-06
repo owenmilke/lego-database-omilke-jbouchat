@@ -1,4 +1,5 @@
 import sqlite3
+import sys
 from flask import Flask, redirect, url_for, request, render_template, flash, redirect, make_response
 
 app = Flask(__name__)
@@ -155,10 +156,17 @@ def filter_search():
     min_price = request.form["min_price"]
     max_price = request.form["max_price"]
 
+    if min_price == "":
+        min_price = 0
+    if max_price == "":
+        max_price = sys.maxsize
+
     con = sqlite3.connect("XBayDB")
     cur = con.cursor()
 
-    listings = cur.execute("SELECT listings.name, users.name, description, price, quantity FROM users JOIN listings ON users.user_id = listings.user_id WHERE available='y';").fetchall()
+    query = "SELECT listings.name, users.name, description, price, quantity FROM users JOIN listings ON users.user_id = listings.user_id WHERE available='y' AND (listings.name LIKE ? OR description LIKE ?) AND price >= ? AND price <= ?;"
+    text_filter = f"%{filter}%"
+    listings = cur.execute(query, (text_filter, text_filter, min_price, max_price)).fetchall()
     l = []
     for listing in listings:
         l.append(listing)
