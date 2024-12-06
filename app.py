@@ -50,7 +50,7 @@ def add():
     return render_template('add.html')
 
 
-@app.route('/edit')
+@app.route('/edit', methods=["Get", "Post"])
 def edit():
     # for adding email or changing username/password
     con = sqlite3.connect("XBayDB")
@@ -59,8 +59,12 @@ def edit():
     cur.execute("SELECT * FROM users WHERE user_id = ?", (AccountData.user_id,))
     user_info = list(cur.fetchone())
 
-    new_username = request.form["new_username"]
-    new_email = request.form["new_email"]
+    new_username = ""
+    new_email = ""
+
+    if request.method == "POST":
+        new_username = request.form["new_username"]
+        new_email = request.form["new_email"]
 
     if (new_username != ""):
         cur.execute("UPDATE users SET name = ? WHERE user_id = ?", (new_username, AccountData.user_id))
