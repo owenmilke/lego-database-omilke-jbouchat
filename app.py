@@ -106,6 +106,7 @@ def create_user():
         return redirect(url_for("index"))
     
     cur.execute("INSERT INTO users(name, password) VALUES(?, ?)", (username, password))
+    con.commit()
 
     result = cur.execute("SELECT user_id FROM users WHERE name = ? AND password = ?", (username, password)).fetchone()
 
@@ -118,7 +119,6 @@ def create_user():
     else:
         flash("Login invalid.")
         return redirect(url_for("index"))
-
 
 if __name__ == "__main__":
     app.run(debug=True)
