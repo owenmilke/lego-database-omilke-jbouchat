@@ -28,7 +28,15 @@
         {% endfor %}
     </div>
     <body>
-        <p>view stuff goes here</p>
+        <h1>{% block title %} Current Listings {% endblock %}</h1>
+        {% for listing in listings %}
+        <div>
+            <h2>{{ listing[0] }}</h2>
+            <p>Description: {{ listing[1] }}</p>
+            <p>Price: ${{ listing[2] }}</p>
+            <p>Quantity: {{ listing[3] }}</p>
+        </div>
+        {% endfor %}
     </body>
     <footer>
         <p>Footer Crap</p>

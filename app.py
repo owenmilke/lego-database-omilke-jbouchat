@@ -23,13 +23,26 @@ def menu():
     cur.close()
     con.close()
 
-    return render_template("menu.html", name = result[0])
+    return render_template("menu.html", name=result[0])
 
 
 @app.route('/view')
 def view():
     # for viewing existing listings
-    return render_template('view.html')
+    con = sqlite3.connect("XBayDB")
+    cur = con.cursor()
+
+    cur.execute("SELECT * FROM listings WHERE available = 'y'")
+    listing_ids = [column[0] for column in cur.fetchall()]
+    listings = []
+    for listing_id in listing_ids:
+        cur.execute("SELECT name, description, price, quantity FROM listings WHERE listing_id = ?", (listing_id,))
+        listings.append(cur.fetchone())
+
+    cur.close()
+    con.close()
+
+    return render_template('view.html', listings=listings)
 
 
 @app.route('/add')
@@ -108,4 +121,4 @@ def create_user():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
