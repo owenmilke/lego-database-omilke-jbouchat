@@ -64,10 +64,10 @@ def confirm_credentials():
 
     if (username == ""):
         flash("Please enter a username.")
-        return redirect("/")
+        return redirect(url_for("index"))
     if (password == ""):
         flash("Please enter a password.")
-        return redirect("/")
+        return redirect(url_for("index"))
 
     con = sqlite3.connect("XBayDB")
     cur = con.cursor()
@@ -82,7 +82,7 @@ def confirm_credentials():
         return menu()
     else:
         flash("Login invalid.")
-        return redirect("/")
+        return redirect(url_for("index"))
 
 
 @app.post('/create_user')
@@ -92,10 +92,10 @@ def create_user():
     
     if (username == ""):
         flash("Username cannot be empty.")
-        return redirect("/")
+        return redirect(url_for("index"))
     if (password == ""):
         flash("Password cannot be empty.")
-        return redirect("/")
+        return redirect(url_for("index"))
     
     con = sqlite3.connect("XBayDB")
     cur = con.cursor()
@@ -103,7 +103,7 @@ def create_user():
     result = cur.execute("SELECT name FROM users WHERE name = ?", (username,)).fetchone()
     if (result is not None):
         flash("Username already exists. Please try another.")
-        return redirect("/")
+        return redirect(url_for("index"))
     
     # cur.execute("INSERT INTO users(name, password) VALUES(?, ?)", (username, password))
 
@@ -117,7 +117,7 @@ def create_user():
         return menu()
     else:
         flash("Login invalid.")
-        return redirect("/")
+        return redirect(url_for("index"))
 
 
 if __name__ == "__main__":
