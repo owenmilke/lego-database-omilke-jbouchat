@@ -26,6 +26,16 @@ def menu():
     return render_template("menu.html", name = result[0])
 
 
+@app.route('/view')
+def view():
+    return render_template('view.html')
+
+
+@app.route('/add')
+def add():
+    return render_template('add.html')
+
+
 @app.post('/confirm_credentials')
 def confirm_credentials():
     username = request.form["l_username"]
