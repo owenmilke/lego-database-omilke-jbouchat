@@ -37,13 +37,13 @@
             <input type="text" id="l_name" name="name"><br>
 
             <label>Description</label>
-            <input type="text" id="l_description" name="description"><br>
+            <textarea id="l_description" name="description" rows="4" cols="50"></textarea><br>
 
             <label>Price ($)</label>
-            <input type="number" step="any" id="l_price" name="price"><br>
+            <input type="number" step="any" id="l_price" min="0" name="price"><br>
 
             <label>Quantity</label>
-            <input type="number" id="l_quantity" name="quantity"><br>
+            <input type="number" id="l_quantity" min="0" name="quantity"><br>
 
             <button for="add_listing_form" id="add_listing_btn" type="submit">Add Listing</button>
         </form>
