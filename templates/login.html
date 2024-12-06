@@ -8,7 +8,18 @@
     <header>
         <h1>xBay - The Everything Store</h1>
     </header>
-
+    <style>
+        .alert {
+                padding: 20px;
+                color: #970020;
+                background-color: #ffd5de;
+            }
+    </style>
+    <div>
+        {% for message in get_flashed_messages() %}
+            <div class="alert">{{ message }}</div>
+        {% endfor %}
+    </div>
     <body>
         <p>Login stuff goes here</p>
 
@@ -30,7 +41,6 @@
             <button for="create_account_form" type="submit">Enter</button>
         </form>
     </body>
-
     <footer>
         <p>Footer Crap</p>
     </footer>

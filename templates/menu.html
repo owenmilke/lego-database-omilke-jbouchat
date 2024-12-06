@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lan="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>xBay</title>
+    </head>
+
+    <header>
+        <h1>xBay - The Everything Store</h1>
+    </header>
+    <style>
+        .alert {
+                padding: 20px;
+                color: #970020;
+                background-color: #ffd5de;
+            }
+    </style>
+    <div>
+        {% for message in get_flashed_messages() %}
+            <div class="alert">{{ message }}</div>
+        {% endfor %}
+    </div>
+    <body>
+        <p>Menu stuff goes here</p>
+
+        <p>Hello {{ name }}!</p>
+    </body>
+    <footer>
+        <p>Footer Crap</p>
+    </footer>
+</html>
