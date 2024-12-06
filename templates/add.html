@@ -8,6 +8,7 @@
     <header>
         <h1>xBay - The Everything Store</h1>
     </header>
+    
     <style>
         .alert {
                 padding: 20px;
@@ -15,6 +16,7 @@
                 background-color: #ffd5de;
             }
     </style>
+    
     <nav>
         <h1>xBay add</h1>
         <a href="{{ url_for('index') }}">Return to login</a>
@@ -22,14 +24,31 @@
         <a href="{{ url_for('view') }}">View Listings</a>
         <a href="{{ url_for('add') }}">Add Listing</a>
     </nav>
+    
     <div>
         {% for message in get_flashed_messages() %}
             <div class="alert">{{ message }}</div>
         {% endfor %}
     </div>
+
     <body>
-        <p>add stuff goes here</p>
+        <form id="add_listing_form" method=post action=add_listing>
+            <label>Item Name</label>
+            <input type="text" id="l_name" name="name"><br>
+
+            <label>Description</label>
+            <input type="text" id="l_description" name="description"><br>
+
+            <label>Price ($)</label>
+            <input type="number" step="any" id="l_price" name="price"><br>
+
+            <label>Quantity</label>
+            <input type="number" id="l_quantity" name="quantity"><br>
+
+            <button for="add_listing_form" id="add_listing_btn" type="submit">Add Listing</button>
+        </form>
     </body>
+    
     <footer>
         <p>Footer Crap</p>
     </footer>
