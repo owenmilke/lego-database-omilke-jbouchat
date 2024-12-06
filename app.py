@@ -6,7 +6,6 @@ app.config['SECRET_KEY'] = '92051f34a4e348cd1311488984333c199abe2e57cc1fa4bf'
 
 class AccountData(object):
     user_id = ""
-    logged = False
 
 @app.route('/')
 def index():
@@ -54,7 +53,28 @@ def add():
 @app.route('/edit')
 def edit():
     # for adding email or changing username/password
-    return render_template('edit.html')
+    con = sqlite3.connect("XBayDB")
+    cur = con.cursor()
+
+    cur.execute("SELECT * FROM users WHERE user_id = ?", (AccountData.user_id,))
+    user_info = list(cur.fetchone())
+
+    new_username = request.form["new_username"]
+    new_email = request.form["new_email"]
+
+    if (new_username != ""):
+        cur.execute("UPDATE users SET name = ? WHERE user_id = ?", (new_username, AccountData.user_id))
+        con.commit()
+        return redirect(url_for("edit"))
+    if (new_email != ""):
+        cur.execute("UPDATE users SET email = ? WHERE user_id = ?", (new_email, AccountData.user_id))
+        con.commit()
+        return redirect(url_for("edit"))
+
+    cur.close()
+    con.close()
+
+    return render_template('edit.html', user_info=user_info)
 
 
 @app.post('/confirm_credentials')
