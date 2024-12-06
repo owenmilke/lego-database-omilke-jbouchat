@@ -30,14 +30,14 @@
     </div>
     <body>
         <h2>{{ name }}'s Orders</h2>
-        {% for order in o %}
+        {% for order in orders %}
         <div>
-            <h2>{{ o[0] }}</h2>
-            <p>Price: ${{ o[1] }}
-            <p>Amount: {{ o[2] }}</p>
-            <p>From: {{ o[3] }}</p>
-            <p>Order Date: {{ o[4] }}</p>
-            <p>Total Price: ${{ o[5] }}
+            <h2>{{ order[0] }}</h2>
+            <p>Price: ${{ order[1] }}
+            <p>Amount: {{ order[2] }}</p>
+            <p>From: {{ order[3] }}</p>
+            <p>Order Date: {{ order[4] }}</p>
+            <p>Total Price: ${{ order[5] }}
         </div>
         {% endfor %}
     </body>
