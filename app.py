@@ -31,17 +31,15 @@ def view():
     con = sqlite3.connect("XBayDB")
     cur = con.cursor()
 
-    cur.execute("SELECT * FROM listings WHERE available = 'y'")
-    listing_ids = [column[0] for column in cur.fetchall()]
-    listings = []
-    for listing_id in listing_ids:
-        cur.execute("SELECT name, description, price, quantity FROM listings WHERE listing_id = ?", (listing_id,))
-        listings.append(cur.fetchone())
+    listings = cur.execute("SELECT listings.name, users.name, description, price, quantity FROM users JOIN listings ON users.user_id = listings.user_id WHERE available='y';").fetchall()
+    l = []
+    for listing in listings:
+        l.append(listing)
 
     cur.close()
     con.close()
 
-    return render_template('view.html', listings=listings)
+    return render_template('view.html', listings=l)
 
 
 @app.route('/add')
@@ -149,6 +147,27 @@ def create_user():
     else:
         flash("Login invalid.")
         return redirect(url_for("index"))
+
+
+@app.post('/filter_search')
+def filter_search():
+    filter = request.form["text_search"]
+    min_price = request.form["min_price"]
+    max_price = request.form["max_price"]
+
+    con = sqlite3.connect("XBayDB")
+    cur = con.cursor()
+
+    listings = cur.execute("SELECT listings.name, users.name, description, price, quantity FROM users JOIN listings ON users.user_id = listings.user_id WHERE available='y';").fetchall()
+    l = []
+    for listing in listings:
+        l.append(listing)
+
+    cur.close()
+    con.close()
+
+    return render_template('view.html', listings=l)
+
 
 @app.post('/add_listing')
 def add_listing():

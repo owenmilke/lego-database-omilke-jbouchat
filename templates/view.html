@@ -29,12 +29,27 @@
     </div>
     <body>
         <h1>{% block title %} Current Listings {% endblock %}</h1>
+        
+        <form id="search_form" method=post action=filter_search>
+            <label for="text_search">Listing Name</label>
+            <input type="text" id="text_search" name="text_search" required><br>
+
+            <label for="min_price">Min Price</label>
+            <input type="number" id="min_price" name="min_price"><br>
+
+            <label for="max_price">Max Price</label>
+            <input type="number" id="max_price" name="max_price"><br>
+
+            <button for="search_form" id="search_btn" type="submit">Search</button>
+        </form>
+
         {% for listing in listings %}
         <div>
             <h2>{{ listing[0] }}</h2>
-            <p>Description: {{ listing[1] }}</p>
-            <p>Price: ${{ listing[2] }}</p>
-            <p>Quantity: {{ listing[3] }}</p>
+            <p>Seller: {{ listing[1] }}
+            <p>Description: {{ listing[2] }}</p>
+            <p>Price: ${{ listing[3] }}</p>
+            <p>Quantity: {{ listing[4] }}</p>
         </div>
         {% endfor %}
     </body>
