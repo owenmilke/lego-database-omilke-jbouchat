@@ -105,7 +105,7 @@ def create_user():
         flash("Username already exists. Please try another.")
         return redirect(url_for("index"))
     
-    # cur.execute("INSERT INTO users(name, password) VALUES(?, ?)", (username, password))
+    cur.execute("INSERT INTO users(name, password) VALUES(?, ?)", (username, password))
 
     result = cur.execute("SELECT user_id FROM users WHERE name = ? AND password = ?", (username, password)).fetchone()
 
