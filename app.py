@@ -120,5 +120,26 @@ def create_user():
         flash("Login invalid.")
         return redirect(url_for("index"))
 
+@app.post('/add_listing')
+def add_listing():
+    item_name = request.form["name"]
+    description = request.form["description"]
+    price = request.form["price"]
+    quantity = request.form["quantity"]
+
+    con = sqlite3.connect("XBayDB")
+    cur = con.cursor()
+
+    query = f"INSERT INTO listings(user_id, name, description, price, quantity, available) VALUES('{AccountData.user_id}', ?, ?, ?, ?, 'y')"
+    cur.execute(query, (item_name, description, price, quantity))
+
+    con.commit()
+
+    cur.close()
+    con.close()
+
+    return redirect(url_for("view"))
+
+
 if __name__ == "__main__":
     app.run(debug=True)
