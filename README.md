@@ -23,3 +23,6 @@ Press CTRL+C to quit
 ```
 
 Simply click on the part that says `https://127.0.0.1:5000`, and the website will open in your default browser.
+
+## Video Walkthrough
+You can find the walkthrough to xBay at https://uvmoffice-my.sharepoint.com/:v:/g/personal/omilke_uvm_edu/EYN1YQqnEjhPndPO9OSBBnkBse7aCO2TvWZB_RJMBq_JYg?e=bMq7qV
