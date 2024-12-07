@@ -237,13 +237,15 @@ def add_listing():
     return redirect(url_for("view"))
 
 
-@app.post('/purchase_listing')
+@app.route('/purchase_listing', methods=["GET", "POST"])
 def purchase_listing():
     name = request.form["name"]
     description = request.form["description"]
     price = request.form["price"]
     quantity = request.form["quantity"]
-    AccountData.quantity = request.form["selected_quantity"]
+
+    if request.method == "POST":
+        AccountData.quantity = request.form["selected_quantity"]
 
     con = sqlite3.connect("XBayDB")
     cur = con.cursor()
