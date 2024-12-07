@@ -1,0 +1,25 @@
+# CS 2500A Final Project - James Bouchat | Owen Milke
+
+## Description
+
+For our final project, we decided to make a clone of eBay. Users can create an account, post listings, view and purchase listings, and view previous listings. Users can search for specific listings with key words, or listings within a price range.
+
+## How to Run
+
+To run the program, go into the root directory of the project and enter:
+
+```bash
+flask --app app run
+```
+
+You will see something like this pop up:
+
+```bash
+ * Serving Flask app 'app'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+Press CTRL+C to quit
+```
+
+Simply click on the part that says `https://127.0.0.1:5000`, and the website will open in your default browser.
