@@ -8,6 +8,7 @@ app.config['SECRET_KEY'] = '92051f34a4e348cd1311488984333c199abe2e57cc1fa4bf'
 class AccountData(object):
     user_id = ""
     cur_listing_id = ""
+    quantity = ""
 
 @app.route('/')
 def index():
@@ -107,8 +108,21 @@ def edit():
 
 @app.route('/buy')
 def buy():
+    con = sqlite3.connect("XBayDB")
+    cur = con.cursor()
 
-    return render_template("buy.html", listing_id=AccountData.cur_listing_id)
+    query = f"SELECT name, description, price, quantity FROM listings WHERE listing_id = ?;"
+    data = cur.execute(query, (AccountData.cur_listing_id,)).fetchall()
+    
+    price = data[2] * AccountData.quantity
+    tax = price * 0.06
+    shipping = 2.99
+    total = price + tax + shipping
+
+    con.close()
+    cur.close()
+
+    return render_template("buy.html", name=data[0], description=data[1], quantity=data[3], price=price, shipping=shipping, tax=tax, total=total)
 
 
 @app.post('/confirm_credentials')
@@ -229,8 +243,7 @@ def purchase_listing():
     description = request.form["description"]
     price = request.form["price"]
     quantity = request.form["quantity"]
-    
-    print(name, description, price, quantity)
+    AccountData.quantity = request.form["selected_quantity"]
 
     con = sqlite3.connect("XBayDB")
     cur = con.cursor()

@@ -32,6 +32,20 @@
     <body>
         <h1>{% block title %} Purchase Listing {% endblock %}</h1>
  
+        <form id="confirm_purchase_form" method=post action=confirm_purchase>
+            <h2>Confirm Purchase Of:</h2>
+
+            <p>Item: {{ name }}</p>
+            <p>Description: {{ description }}</p>
+            <p>Quantity: {{ quantity }}</p>
+            <p>Price: {{ price }}</p>
+            <p>Shipping: {{ shipping }}</p>
+            <p>Tax: {{ tax }}</p>
+            <p>Total: {{ total }}</p>
+
+            <button for="confirm_purchase_form" type="submit">Confirm</button>
+        </form>
+
     </body>
     <footer>
         <p>Footer Crap</p>

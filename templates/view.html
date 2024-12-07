@@ -53,11 +53,16 @@
                 <p>Description: {{ listing[2] }}</p>
                 <p>Price: ${{ listing[3] }}</p>
                 <p>Quantity: {{ listing[4] }}</p>
+                
+                <label for="quantity">Quantity</label>
+                <input type="number" min="0" max="listing[4]" value="0">
+                
+                <button for="purchase_form" type="submit">Purchase</button>
+
                 <input type="hidden" name="name" value="{{ listing[0] }}">
                 <input type="hidden" name="description" value="{{ listing[2] }}">
                 <input type="hidden" name="price" value="{{ listing[3] }}">
                 <input type="hidden" name="quantity" value="{{ listing[4] }}">
-                <button for="purchase_form" type="submit">Purchase</button>
             </form>
         </div>
         {% endfor %}
