@@ -57,7 +57,7 @@ def orders():
 
     result = cur.execute("SELECT name FROM users WHERE user_id = ?", (AccountData.user_id,)).fetchone()
 
-    orders = cur.execute("SELECT listings.name, listings.price, orders.total_quantity, listings.user_id,  orders.order_date, orders.total_price FROM listings JOIN  order_listings ON listings.listing_id  = order_listings.listing_id JOIN orders ON order_listings.order_id = orders.order_id WHERE orders.user_id = ?", (AccountData.user_id,)).fetchall()
+    orders = cur.execute("SELECT listings.name, listings.price, orders.total_quantity, users.name,  orders.order_date, orders.total_price FROM listings JOIN users ON listings.user_id = users.user_id JOIN order_listings ON listings.listing_id = order_listings.listing_id JOIN orders ON order_listings.order_id = orders.order_id WHERE orders.user_id = ?", (AccountData.user_id,)).fetchall()
     o = []
     for order in orders:
         o.append(order)
