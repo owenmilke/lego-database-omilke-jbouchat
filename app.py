@@ -1,5 +1,6 @@
 import sqlite3
 import sys
+from datetime import datetime
 from flask import Flask, redirect, url_for, request, render_template, flash, redirect, make_response
 
 app = Flask(__name__)
@@ -9,6 +10,7 @@ class AccountData(object):
     user_id = ""
     cur_listing_id = ""
     quantity = ""
+    total_price = ""
 
 @app.route('/')
 def index():
@@ -114,17 +116,17 @@ def buy():
     query = f"SELECT name, description, price, quantity FROM listings WHERE listing_id = ?;"
     data = cur.execute(query, (AccountData.cur_listing_id,)).fetchall()[0]
     
-    print(data)
-
-    price = float(data[2] * AccountData.quantity)
-    tax = price * 0.06
+    print(type(data[2]), type(AccountData.quantity))
+    price = float(data[2] * int(AccountData.quantity))
+    tax = round(price * 0.06, 2)
     shipping = 2.99
-    total = price + tax + shipping
+    total = round(price + tax + shipping, 2)
+
+    AccountData.total_price = str(total)
 
     con.close()
-    cur.close()
 
-    return render_template("buy.html", name=data[0], description=data[1], quantity=data[3], price=price, shipping=shipping, tax=tax, total=total)
+    return render_template("buy.html", name=data[0], description=data[1], quantity=AccountData.quantity, price=price, shipping=shipping, tax=tax, total=total)
 
 
 @app.post('/confirm_credentials')
@@ -258,6 +260,44 @@ def purchase_listing():
     con.close()
 
     return redirect(url_for("buy"))
+
+
+@app.post('/confirm_purchase')
+def confirm_purchase():
+    con = sqlite3.connect("XBayDB")
+    cur = con.cursor()
+
+    original_quantity = cur.execute(f"SELECT quantity FROM listings WHERE listing_id=?;", (AccountData.cur_listing_id,)).fetchone()[0]
+    new_quantity = int(original_quantity) - int(AccountData.quantity)
+
+    query = f"UPDATE listings SET quantity=? WHERE listing_id=?;"
+    cur.execute(query, (new_quantity, AccountData.cur_listing_id))
+
+    if(new_quantity == 0):
+        query = f"UPDATE listings SET available='n' WHERE listing_id=?;"
+        cur.execute(query, (AccountData.cur_listing_id,))
+
+
+    query = f"INSERT INTO orders(order_id, user_id, order_date, total_price, total_quantity) VALUES(?, ?, ?, ?, ?);"
+    cur_time = datetime.now()
+    order_date = cur_time.strftime("%m/%d/%y")
+    other_order_date = cur_time.strftime("%m%d%y%M%S")
+
+    order_id = other_order_date + AccountData.user_id
+
+    cur.execute(query, (order_id, AccountData.user_id, order_date, AccountData.total_price, AccountData.quantity))
+
+    query = f"INSERT INTO order_listings(order_id, listing_id) VALUES(?, ?);"
+    cur.execute(query, (order_id, AccountData.cur_listing_id))
+
+    AccountData.cur_listing_id = ""
+    AccountData.quantity = ""
+    AccountData.total_price = ""
+
+    con.commit()
+    con.close()
+
+    return redirect(url_for("orders"))
 
 
 if __name__ == "__main__":
