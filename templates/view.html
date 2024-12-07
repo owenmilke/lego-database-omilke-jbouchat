@@ -47,11 +47,18 @@
 
         {% for listing in listings %}
         <div>
-            <h2>{{ listing[0] }}</h2>
-            <p>Seller: {{ listing[1] }}
-            <p>Description: {{ listing[2] }}</p>
-            <p>Price: ${{ listing[3] }}</p>
-            <p>Quantity: {{ listing[4] }}</p>
+            <form id="purchase_form" method=post action=purchase_listing>
+                <h2>{{ listing[0] }}</h2>
+                <p>Seller: {{ listing[1] }}
+                <p>Description: {{ listing[2] }}</p>
+                <p>Price: ${{ listing[3] }}</p>
+                <p>Quantity: {{ listing[4] }}</p>
+                <input type="hidden" name="name" value="{{ listing[0] }}">
+                <input type="hidden" name="description" value="{{ listing[2] }}">
+                <input type="hidden" name="price" value="{{ listing[3] }}">
+                <input type="hidden" name="quantity" value="{{ listing[4] }}">
+                <button for="purchase_form" type="submit">Purchase</button>
+            </form>
         </div>
         {% endfor %}
     </body>

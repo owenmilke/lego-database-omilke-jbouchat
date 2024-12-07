@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lan="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>xBay</title>
+    </head>
+
+    <header>
+        <h1>xBay - The Everything Store</h1>
+    </header>
+    <style>
+        .alert {
+                padding: 20px;
+                color: #970020;
+                background-color: #ffd5de;
+            }
+    </style>
+    <nav>
+        <h1>xBay view</h1>
+        <a href="{{ url_for('menu') }}">Main Menu</a>
+        <a href="{{ url_for('edit') }}">Edit Account</a>
+        <a href="{{ url_for('view') }}">View Listings</a>
+        <a href="{{ url_for('add') }}">Add Listing</a>
+        <a href="{{ url_for('orders') }}">View Orders</a>
+        <a href="{{ url_for('index') }}">Log-out</a>
+    </nav>
+    <div>
+        {% for message in get_flashed_messages() %}
+            <div class="alert">{{ message }}</div>
+        {% endfor %}
+    </div>
+    <body>
+        <h1>{% block title %} Purchase Listing {% endblock %}</h1>
+ 
+    </body>
+    <footer>
+        <p>Footer Crap</p>
+    </footer>
+</html>
