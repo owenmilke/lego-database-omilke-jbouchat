@@ -33,10 +33,10 @@
         <p>Menu stuff goes here</p>
         <p>Hello {{ name }}!</p>
         <div>
-            <img src="{{ url_for('graph_image') }}" alt="Generated Graph of Number of Orders From Each User">  
+            <img src="{{ url_for('graph_image') }}?{{ time }}" alt="Generated Graph of Number of Orders From Each User">  
         </div>
         <div>
-            <img src="{{ url_for('graph_image_also') }}" alt="Generated Graph of Number of Orders From Each Day">  
+            <img src="{{ url_for('graph_image_also') }}?{{ time }}" alt="Generated Graph of Number of Orders From Each Day">  
         </div>
     </body>
     <footer>

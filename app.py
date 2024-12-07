@@ -3,6 +3,7 @@ import sys
 import pandas as pd
 import io
 import base64
+import time
 from datetime import datetime
 from flask import Flask, redirect, url_for, request, render_template, flash, redirect, make_response
 import matplotlib.pyplot as plt
@@ -12,6 +13,7 @@ matplotlib.use("Agg")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '92051f34a4e348cd1311488984333c199abe2e57cc1fa4bf'
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 class AccountData(object):
     user_id = ""
@@ -34,7 +36,7 @@ def menu():
     cur.close()
     con.close()
 
-    return render_template("menu.html", name=result[0])
+    return render_template("menu.html", name=result[0], time=(time.time()))
 
 
 @app.route('/view')
@@ -317,7 +319,7 @@ def graph_image():
     fig, ax = plt.subplots(figsize=(5, 4))
     ax.bar(df["name"], df["order_count"], color="blue")
     ax.set_xlabel("User")
-    ax.set_ylabel("Orders Placed")
+    ax.set_ylabel("Orders")
     ax.set_title("Orders Placed by Users")
     ax.tick_params(axis='x', rotation=45)
     fig.tight_layout()
@@ -340,7 +342,7 @@ def graph_image_also():
     df = pd.read_sql_query("SELECT order_date, COUNT(order_id) AS count_order FROM orders GROUP BY order_date ORDER BY count_order DESC", con)
     
     fig, ax = plt.subplots(figsize=(5, 4))
-    ax.bar(df["order_date"], df["count_order"], color="blue")
+    ax.bar(df["order_date"], df["count_order"], color="green")
     ax.set_xlabel("Date")
     ax.set_ylabel("Orders Placed")
     ax.set_title("Orders Placed by Day")
@@ -358,4 +360,4 @@ def graph_image_also():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(threaded=False, debug=True)
