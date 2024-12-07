@@ -1,7 +1,14 @@
 import sqlite3
 import sys
+import pandas as pd
+import io
+import base64
 from datetime import datetime
 from flask import Flask, redirect, url_for, request, render_template, flash, redirect, make_response
+import matplotlib.pyplot as plt
+import matplotlib
+
+matplotlib.use("Agg")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '92051f34a4e348cd1311488984333c199abe2e57cc1fa4bf'
@@ -298,6 +305,56 @@ def confirm_purchase():
     con.close()
 
     return redirect(url_for("orders"))
+
+
+@app.route("/graph_image")
+def graph_image():
+    con = sqlite3.connect("XBayDB")
+    cur = con.cursor()
+
+    df = pd.read_sql_query("SELECT users.name, COUNT(orders.user_id) AS order_count FROM users JOIN orders ON users.user_id = orders.user_id GROUP BY orders.user_id ORDER BY order_count DESC", con)
+     
+    fig, ax = plt.subplots(figsize=(5, 4))
+    ax.bar(df["name"], df["order_count"], color="blue")
+    ax.set_xlabel("User")
+    ax.set_ylabel("Orders Placed")
+    ax.set_title("Orders Placed by Users")
+    ax.tick_params(axis='x', rotation=45)
+    fig.tight_layout()
+
+    img = io.BytesIO()
+    plt.savefig(img, format="png")
+    img.seek(0)
+    plt.close(fig)
+    
+    con.close()
+
+    return make_response(img.read()), 200, {"Content-Type": "image/png"}
+
+
+@app.route("/graph_image_also")
+def graph_image_also():
+    con = sqlite3.connect("XBayDB")
+    cur = con.cursor()
+
+    df = pd.read_sql_query("SELECT order_date, COUNT(order_id) AS count_order FROM orders GROUP BY order_date ORDER BY count_order DESC", con)
+    
+    fig, ax = plt.subplots(figsize=(5, 4))
+    ax.bar(df["order_date"], df["count_order"], color="blue")
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Orders Placed")
+    ax.set_title("Orders Placed by Day")
+    ax.tick_params(axis='x', rotation=45)
+    fig.tight_layout()
+
+    img = io.BytesIO()
+    plt.savefig(img, format="png")
+    img.seek(0)
+    plt.close(fig)
+
+    con.close()
+
+    return make_response(img.read()), 200, {"Content-Type": "image/png"}
 
 
 if __name__ == "__main__":
