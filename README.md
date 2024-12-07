@@ -6,6 +6,7 @@ For our final project, we decided to make a clone of eBay. Users can create an a
 
 ## How to Run
 
+Firstly, place all .html files into a folder titled "templates" in the same directory as app.py.
 To run the program, go into the root directory of the project and enter:
 
 ```bash
