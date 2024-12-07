@@ -112,9 +112,11 @@ def buy():
     cur = con.cursor()
 
     query = f"SELECT name, description, price, quantity FROM listings WHERE listing_id = ?;"
-    data = cur.execute(query, (AccountData.cur_listing_id,)).fetchall()
+    data = cur.execute(query, (AccountData.cur_listing_id,)).fetchall()[0]
     
-    price = data[2] * AccountData.quantity
+    print(data)
+
+    price = float(data[2] * AccountData.quantity)
     tax = price * 0.06
     shipping = 2.99
     total = price + tax + shipping
@@ -244,8 +246,7 @@ def purchase_listing():
     price = request.form["price"]
     quantity = request.form["quantity"]
 
-    if request.method == "POST":
-        AccountData.quantity = request.form["selected_quantity"]
+    AccountData.quantity = request.form["selected_quantity"]
 
     con = sqlite3.connect("XBayDB")
     cur = con.cursor()
